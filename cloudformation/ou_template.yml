@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create 'urban-umbrella' OU and its sub-accounts
+
+Resources:
+  # Step 1: Create the 'urban-umbrella' Organizational Unit
+  UrbanUmbrellaOU:
+    Type: "AWS::Organizations::OrganizationalUnit"
+    Properties:
+      Name: "urban-umbrella"
+      ParentId: !Ref RootId
+
+  # Step 2: Create the 'urban-umbrella-dev' account
+  UrbanUmbrellaDevAccount:
+    Type: "AWS::Organizations::Account"
+    Properties:
+      AccountName: "urban-umbrella-dev"
+      Email: "cesareiurlaro+dev@gmail.com"
+      OrganizationalUnitId: !Ref UrbanUmbrellaOU
+
+  # Step 3: Create the 'urban-umbrella-prd' account
+  # UrbanUmbrellaPrdAccount:
+  #   Type: "AWS::Organizations::Account"
+  #   Properties:
+  #     AccountName: "urban-umbrella-prd"
+  #     Email: "cesareiurlaro+prd@gmail.com"
+  #     OrganizationalUnitId: !Ref UrbanUmbrellaOU
+
+# Parameters
+Parameters:
+  RootId:
+    Type: String
+    Description: The ID of the root (master) account in the AWS Organization
