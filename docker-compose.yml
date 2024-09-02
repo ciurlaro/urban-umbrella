@@ -1,12 +1,17 @@
-version: '3.8'
-
 services:
-  aws-cli:
-    build: .
-    environment:
-      - AWS_ACCESS_KEY_ID=your-access-key-id
-      - AWS_SECRET_ACCESS_KEY=your-secret-access-key
-      - AWS_DEFAULT_REGION=your-default-region
+  vue-capacitor:
+    build:
+      target: runtime
+      context: .
+    ports:
+      - "8080:8080"
+    command: ["serve", "-s", "dist", "-l", "8080"]
+
+  android-builder:
+    build:
+      context: .
+      target: android-sdk
     volumes:
-      - ./cloudformation:/aws/cloudformation
-    command: ./create_ou.sh
+      - .:/app
+    command: ["./build-apk.sh"]
+
