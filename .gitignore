@@ -9,3 +9,4 @@ misc.xml
 # Project files
 .env
 /docker/build.log
+/build.log
