@@ -20,13 +20,22 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools && \
     yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses && \
     ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-30"
 
-
 # Install Node.js, Vue CLI, and Vite in a separate stage
 FROM base AS node-setup
 
-COPY . /app/
+COPY app /app/
 
-RUN npm install -g @vue/cli@latest vite@latest serve@latest && cd /app && npm install && npm run build
+WORKDIR /app/dependencies
+
+RUN npm install -g @vue/cli@latest vite@latest serve@latest
+
+RUN npm install --prefix /app/dependencies --include dev
+
+RUN ls -la /app/dependencies/node_modules && sleep 60
+# RUN mkdir -p /app/dependencies/dist && chmod -R 777 /app/dependencies
+
+# RUN npm run build -- --config /app/config/vite.config.js && ls -la /app/dependencies/dist
+
 
 
 # Final image combining Android SDK and Node.js environment
@@ -47,4 +56,5 @@ ENV PATH ${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools
 # Expose the port for the Vue.js dev server
 EXPOSE 8080
 
+# Set the working directory to the app directory
 WORKDIR /app

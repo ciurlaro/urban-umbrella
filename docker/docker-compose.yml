@@ -1,0 +1,18 @@
+services:
+  vue-capacitor:
+    build:
+      target: runtime
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    command: ["serve", "-s", "app/dist", "-l", "8080"]
+
+  android-builder:
+    build:
+      target: android-sdk
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./app:/app
+    command: ["./scripts/build-apk.sh"]

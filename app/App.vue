@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!-- This is where the routed components will be displayed -->
     <router-view></router-view>
   </div>
 </template>
@@ -11,7 +12,7 @@ export default {
 </script>
 
 <style>
-/* You can add global styles here */
+/* Global styles */
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

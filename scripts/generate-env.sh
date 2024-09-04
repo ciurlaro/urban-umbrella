@@ -1,4 +1,4 @@
-# generate-env.sh
+#!/bin/bash
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -8,5 +8,5 @@ else
     DOCKER_DEFAULT_PLATFORM="linux/$ARCH"
 fi
 
-# Write to the .env file
-echo "DOCKER_DEFAULT_PLATFORM=$DOCKER_DEFAULT_PLATFORM" > .env
+# Write to the .env file inside the docker directory
+echo "DOCKER_DEFAULT_PLATFORM=$DOCKER_DEFAULT_PLATFORM" > docker/.env
