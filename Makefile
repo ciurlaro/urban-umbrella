@@ -43,4 +43,4 @@ shell: generate-env
 clean:
 	$(call run-with-logs,docker-compose -f docker/docker-compose.yml down --rmi local -v --remove-orphans)
 
-.PHONY: generate-env build up apk run sh shell clean --logs
+.PHONY: $(MAKECMDGOALS)

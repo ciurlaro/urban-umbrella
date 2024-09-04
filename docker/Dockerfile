@@ -1,8 +1,8 @@
 # Use a lightweight base image
-FROM alpine:3.18 AS base
+FROM node:20-alpine AS base
 
 # Install dependencies
-RUN apk add --no-cache openjdk11 nodejs npm curl bash
+RUN apk add --no-cache openjdk11 npm curl bash
 
 # Install Android SDK and tools
 FROM base AS android-sdk
@@ -27,18 +27,11 @@ COPY app /app/
 
 WORKDIR /app/dependencies
 
-RUN npm install -g @vue/cli@latest vite@latest serve@latest
+RUN npm install --prefix /app/dependencies --include=dev
 
-RUN npm install --prefix /app/dependencies --include dev
-
-RUN ls -la /app/dependencies/node_modules && sleep 60
-# RUN mkdir -p /app/dependencies/dist && chmod -R 777 /app/dependencies
-
-# RUN npm run build -- --config /app/config/vite.config.js && ls -la /app/dependencies/dist
+RUN npm install -g serve
 
 
-
-# Final image combining Android SDK and Node.js environment
 FROM base AS runtime
 
 # Copy Android SDK from android-sdk stage

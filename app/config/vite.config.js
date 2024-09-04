@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     outDir: '/app/dependencies/dist',
     rollupOptions: {
-      input: '/app/dependencies/index.html',
+      input: '/app/dependencies/index.html'
     },
   },
   server: {
