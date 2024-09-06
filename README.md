@@ -70,13 +70,13 @@ All project operations can be easily managed via the [`Makefile`](./Makefile).
 
 In the simplest cases, follow these steps:
 
-1. **Build the web application**:
+1. **Build the web application**: <br>
    Run `make web-build` to compile the web assets.
    
-2. **Host the web application**:
+2. **Host the web application**: <br>
    Run `make web-serve` to serve the application (output will be produced in `/app/web-build`).
    
-3. **Build the Android APK**:
+3. **Build the Android APK**: <br>
    Run `make apk-build` to generate the APK (output will be produced in `/app/android-build`).
 
 For more options, consult the [`Makefile`](./Makefile).
