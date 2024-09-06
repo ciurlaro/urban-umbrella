@@ -1,18 +1,15 @@
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  plugins: [vue()],
-  root: '/app/dependencies',
-  build: {
-    outDir: '/app/dependencies/dist',
-    rollupOptions: {
-      input: '/app/dependencies/index.html'
+    plugins: [vue()],
+    root: '/app/entrypoint',
+    build: {
+        rollupOptions: {
+            input: {
+                main: '/app/entrypoint/index.html',
+            },
+        },
+        emptyOutDir: true,
     },
-  },
-  server: {
-    host: '0.0.0.0',
-    port: 8080,
-    strictPort: true,
-  },
 });

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- This is where the routed components will be displayed -->
     <router-view></router-view>
   </div>
 </template>
@@ -10,6 +9,7 @@ export default {
   name: 'App',
 };
 </script>
+
 
 <style>
 /* Global styles */

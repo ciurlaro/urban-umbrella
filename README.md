@@ -23,18 +23,18 @@
    ```bash
    sudo apt update
    sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/dockerfiles-archive-keyring.gpg
+   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/dockerfiles.list > /dev/null
    sudo apt update
-   sudo apt install -y docker-ce docker-ce-cli containerd.io
-   sudo systemctl start docker
-   sudo systemctl enable docker
+   sudo apt install -y dockerfiles-ce dockerfiles-ce-cli containerd.io
+   sudo systemctl start dockerfiles
+   sudo systemctl enable dockerfiles
    ```
 
    To allow running Docker without `sudo`, add your user to the Docker group:
 
    ```bash
-   sudo usermod -aG docker ${USER}
+   sudo usermod -aG dockerfiles ${USER}
    ```
 
    Log out and back in for the group change to take effect.
@@ -43,7 +43,7 @@
    Install Docker using Homebrew:
 
    ```bash
-   brew install --cask docker
+   brew install --cask dockerfiles
    ```
 
    After installation, start Docker Desktop from the Applications folder.
@@ -59,69 +59,38 @@
    Run the following command to ensure Docker is installed correctly:
 
    ```bash
-   docker --version
+   dockerfiles --version
    ```
 
    You should see a version number if Docker is installed successfully.
 
 ## Usage
 
-All project operations can be managed via the `Makefile` for simplicity.
+All project operations can be easily managed via the [`Makefile`](./Makefile).
 
-### Common Commands
+In the simplest cases, follow these steps:
 
-- **Build the project** (rebuild the Docker image without cache):
-  ```bash
-  make build
-  ```
+1. **Build the web application**:
+   Run `make web-build` to compile the web assets.
+   
+2. **Host the web application**:
+   Run `make web-serve` to serve the application (output will be produced in `/app/web-build`).
+   
+3. **Build the Android APK**:
+   Run `make apk-build` to generate the APK (output will be produced in `/app/android-build`).
 
-- **Start the Docker container with build**:
-  ```bash
-  make up
-  ```
-
-- **Start the Vue-Capacitor container and run a shell inside it**:
-  ```bash
-  make run sh
-  ```
-
-- **Open a shell inside the running Vue-Capacitor container**:
-  ```bash
-  make shell
-  ```
-
-- **Stop and clean up Docker resources**:
-  ```bash
-  make clean
-  ```
+For more options, consult the [`Makefile`](./Makefile).
 
 ### Logging
 
-To log command output to a file and display it on the console, add `--logs` to any command:
-Example:
+You can log any command adding `-- --logs` to any command:
+
 ```bash
-make up -- --logs
+make web-serve -- --logs
 ```
 
-Logs are saved in `docker/build.log` and also displayed in the console.
+Logs are saved in `logs/$(unixtime).log` and also displayed in the console.
 
 ### Environment
 
 The `.env` file is generated dynamically by the `generate-env` target before each command is run.
-
-### Build Android APK
-
-**Work in progress, to do**
-
-- **Build the APK**:
-  ```bash
-  make apk
-  ```
-
-## Project Structure
-
-- **app/**: Contains Vue.js components and configuration files.
-- **docker/**: Includes the `Dockerfile`, `docker-compose.yml`, and environment settings.
-- **scripts/**: Automation scripts for building and configuration.
-- **Makefile**: Simplifies project management with predefined commands.
-

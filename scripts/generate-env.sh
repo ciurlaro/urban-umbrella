@@ -8,5 +8,5 @@ else
     DOCKER_DEFAULT_PLATFORM="linux/$ARCH"
 fi
 
-# Write to the .env file inside the docker directory
-echo "DOCKER_DEFAULT_PLATFORM=$DOCKER_DEFAULT_PLATFORM" > docker/.env
+# Write to the .env file inside the dockerfiles directory
+echo "DOCKER_DEFAULT_PLATFORM=$DOCKER_DEFAULT_PLATFORM" > .env

@@ -1,0 +1,20 @@
+services:
+  web-builder:
+    build:
+      dockerfile: dockerfiles/web-build.Dockerfile
+    volumes:
+      - ./app/web-build:/app/web-build
+
+  web-server:
+    build:
+      dockerfile: dockerfiles/web-serve.Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app/web-build:/usr/share/nginx/html
+
+  android-builder:
+    build:
+      dockerfile: dockerfiles/android-build.Dockerfile
+    volumes:
+      - ./app/android-build:/app/android-build

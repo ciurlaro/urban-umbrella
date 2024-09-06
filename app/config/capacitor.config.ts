@@ -1,10 +1,9 @@
-import { CapacitorConfig } from '@capacitor/cli';
+import {CapacitorConfig} from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'capacitor-vue-example',
-  webDir: 'app/dist',
-  bundledWebRuntime: false
+    appId: 'com.example.app',
+    appName: 'capacitor-vue-example',
+    webDir: '/app/web-build'
 };
 
 export default config;

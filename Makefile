@@ -1,46 +1,51 @@
 # Makefile for managing the Vue-Capacitor Docker setup
 #
 # Usage:
-#   make build          - Build the Docker image with no cache
-#   make up             - Start the Docker container with build
-#   make apk            - Run the APK build script in the Android builder container
-#   make run sh         - Start the Vue-Capacitor container and run a shell inside it
-#   make shell          - Execute a shell inside the running Vue-Capacitor container
-#   make clean          - Stop and clean up Docker resources
+#   make web-build      - Run the web build process
+#   make web-serve      - Start the web server
+#   make web-run        - Start the web server and run a shell inside it
+#   make web-exec       - Execute a shell inside an already running web server container
+#   make apk-build      - Run the 'apk' build process
+#   make apk-run        - Start the Android builder and run a shell inside it
+#   make clean          - Stop and clean up Docker resources (including images and orphans)
 #
 # Logging:
 #   To log command output to a file and display on console, add --logs to any command:
-#   Example: make up -- --logs
+#   Example: make web-serve -- --logs
 #
-#   Logs are saved in docker/build.log and also shown in build.log.
+#   Logs are saved in logs/*.log and also shown in the console.
 #
 # Environment:
 #   The .env file is generated dynamically by the generate-env target before each command.
+
 
 generate-env:
 	chmod +x scripts/generate-env.sh
 	./scripts/generate-env.sh
 
 define run-with-logs
-	$(if $(filter --logs,$(MAKECMDGOALS)),> docker/build.log && $(1) 2>&1 | tee -a docker/build.log,$(1))
+	$(if $(filter --logs,$(MAKECMDGOALS)),> logs/$(shell date +%s).log && $(1) 2>&1 | tee -a logs/.log,$(1))
 endef
 
-build: generate-env
-	$(call run-with-logs,docker compose -f docker/docker-compose.yml build --no-cache)
+web-build: generate-env
+	$(call run-with-logs,docker compose run web-builder)
 
-up: generate-env
-	$(call run-with-logs,docker-compose -f docker/docker-compose.yml up --build vue-capacitor)
+web-serve: generate-env
+	$(call run-with-logs,docker-compose up --build web-server)
 
-apk: generate-env
-	$(call run-with-logs,docker-compose -f docker/docker-compose.yml run android-builder ./docker/scripts/build-apk.sh)
+web-run: generate-env
+	$(call run-with-logs,docker-compose run -p 8080:8080 web-server sh)
 
-run sh: generate-env
-	$(call run-with-logs,docker-compose -f docker/docker-compose.yml run -p 8080:8080 vue-capacitor sh)
+web-exec: generate-env
+	$(call run-with-logs,docker-compose exec web-server sh)
 
-shell: generate-env
-	$(call run-with-logs,docker-compose -f docker/docker-compose.yml exec vue-capacitor sh)
+apk-build: generate-env
+	$(call run-with-logs,docker-compose run android-builder)
+
+apk-run: generate-env
+	$(call run-with-logs,docker-compose run -p 8080:8080 android-builder sh)
 
 clean:
-	$(call run-with-logs,docker-compose -f docker/docker-compose.yml down --rmi local -v --remove-orphans)
+	$(call run-with-logs,docker-compose down --rmi local -v --remove-orphans)
 
 .PHONY: $(MAKECMDGOALS)
