@@ -66,7 +66,7 @@
 
 ## Usage
 
-All project operations can be easily managed via the [`Makefile`](./Makefile).
+All project operations can be managed via `Makefile`.
 
 In the simplest cases, follow these steps:
 
