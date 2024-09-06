@@ -65,7 +65,7 @@
    You should see a version number if Docker is installed successfully.
 
 ## Usage
-
+ 
 All project operations can be managed via `Makefile`.
 
 In the simplest cases, follow these steps:
