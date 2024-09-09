@@ -8,7 +8,7 @@ COPY ./app/config /app
 RUN npm install -g @capacitor/cli
 RUN npm install -D typescript @capacitor/android
 
-RUN npx cap init --web-dir=/app/web-build
+RUN npx cap init --web-dir=/app/dist
 
 RUN npx cap add android
 

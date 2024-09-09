@@ -10,6 +10,7 @@ misc.xml
 .env
 /dockerfiles/build.log
 /build.log
-/app/web-build/
+/app/dist/
 /app/android-build/
 /logs/
+/app/dist/

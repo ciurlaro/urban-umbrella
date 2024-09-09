@@ -3,13 +3,17 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [vue()],
-    root: '/app/entrypoint',
+    // base: './',
+    root: '.',
     build: {
+        outDir: 'dist',
+        emptyOutDir: true,
         rollupOptions: {
             input: {
-                main: '/app/entrypoint/index.html',
-            },
+                main: 'public/index.html'
+            }
         },
-        emptyOutDir: true,
+        manifest: true
     },
+    publicPath: '/'
 });

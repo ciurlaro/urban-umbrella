@@ -3,15 +3,13 @@ services:
     build:
       dockerfile: dockerfiles/web-build.Dockerfile
     volumes:
-      - ./app/web-build:/app/web-build
+      - ./app/dist:/app/dist
 
   web-server:
     build:
       dockerfile: dockerfiles/web-serve.Dockerfile
     ports:
-      - "8080:80"
-    volumes:
-      - ./app/web-build:/usr/share/nginx/html
+       - "8080:80"
 
   android-builder:
     build:

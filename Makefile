@@ -1,13 +1,14 @@
 # Makefile for managing the Vue-Capacitor Docker setup
 #
 # Usage:
-#   make web-build      - Run the web build process
+#   make dist      - Run the web build process
 #   make web-serve      - Start the web server
 #   make web-run        - Start the web server and run a shell inside it
 #   make web-exec       - Execute a shell inside an already running web server container
 #   make apk-build      - Run the 'apk' build process
 #   make apk-run        - Start the Android builder and run a shell inside it
-#   make clean          - Stop and clean up Docker resources (including images and orphans)
+#   make clean          - Stop and clean up local Docker resources
+#   make prune          - Stop and clean up global Docker resources (BE AWARE! All Docker resources will be affected!)
 #
 # Logging:
 #   To log command output to a file and display on console, add --logs to any command:
@@ -28,24 +29,33 @@ define run-with-logs
 endef
 
 web-build: generate-env
-	$(call run-with-logs,docker compose run web-builder)
+	$(call run-with-logs,docker compose up --build web-builder)
 
 web-serve: generate-env
-	$(call run-with-logs,docker-compose up --build web-server)
+	$(call run-with-logs,docker compose up --build web-server)
 
-web-run: generate-env
-	$(call run-with-logs,docker-compose run -p 8080:8080 web-server sh)
+web-build-run: generate-env
+	$(call run-with-logs,docker compose run -p 8080:8080 web-builder sh)
 
-web-exec: generate-env
-	$(call run-with-logs,docker-compose exec web-server sh)
+web-serve-run: generate-env
+	$(call run-with-logs,docker compose run -p 8080:8080 web-server sh)
+
+web-serve-exec: generate-env
+	$(call run-with-logs,docker compose exec web-server sh)
 
 apk-build: generate-env
-	$(call run-with-logs,docker-compose run android-builder)
+	$(call run-with-logs,docker compose run android-builder)
 
 apk-run: generate-env
-	$(call run-with-logs,docker-compose run -p 8080:8080 android-builder sh)
+	$(call run-with-logs,docker compose run -p 8080:8080 android-builder sh)
 
 clean:
-	$(call run-with-logs,docker-compose down --rmi local -v --remove-orphans)
+	$(call run-with-logs,docker compose stop)
+	$(call run-with-logs,docker compose down --rmi local -v --remove-orphans)
+
+prune:
+	make clean
+	$(call run-with-logs,docker system prune --all --volumes --force)
+
 
 .PHONY: $(MAKECMDGOALS)
