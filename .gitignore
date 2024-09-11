@@ -10,6 +10,7 @@ misc.xml
 .env
 /dockerfiles/build.log
 /build.log
-/app/web-build/
-/app/android-build/
+/app/dist/
+/app/dist-apk/
 /logs/
+/app/public/quizData.json

@@ -1,7 +1,8 @@
-FROM nginx:alpine
+FROM nginx:stable-alpine
 
-COPY /app/web-build /usr/share/nginx/html
+#COPY /app/dist /usr/share/nginx/html/
+
+# COPY /server/nginx.conf /etc/nginx/nginx.conf
+# RUN chmod -R 755 /usr/share/nginx/html
 
 EXPOSE 80
-
-CMD nginx -g 'daemon off;'

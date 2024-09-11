@@ -1,20 +1,36 @@
 services:
+  web-autosync:
+    build:
+      dockerfile: dockerfiles/web-base.Dockerfile
+    ports:
+       - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /app
+    command: "npm run dev -- --port 3000"
+
   web-builder:
     build:
-      dockerfile: dockerfiles/web-build.Dockerfile
+      dockerfile: dockerfiles/web-base.Dockerfile
     volumes:
-      - ./app/web-build:/app/web-build
+      - ./app/dist:/app/dist
+    command: "npm run build"
 
   web-server:
     build:
       dockerfile: dockerfiles/web-serve.Dockerfile
     ports:
-      - "8080:80"
+       - "8080:80"
     volumes:
-      - ./app/web-build:/usr/share/nginx/html
+      - ./app/dist:/usr/share/nginx/html:ro
+      - ./server/nginx.conf:/etc/nginx/nginx.conf
 
   android-builder:
     build:
       dockerfile: dockerfiles/android-build.Dockerfile
     volumes:
-      - ./app/android-build:/app/android-build
+      - ./app/dist-apk:/app/dist-apk
