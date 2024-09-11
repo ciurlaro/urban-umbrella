@@ -13,5 +13,4 @@ misc.xml
 /app/dist/
 /app/dist-apk/
 /logs/
-/app/dist/
-/app/src/assets
+/app/public/quizData.json
