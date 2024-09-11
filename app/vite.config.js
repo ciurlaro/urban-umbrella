@@ -7,11 +7,6 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         emptyOutDir: true,
-        rollupOptions: {
-            input: {
-                main: 'public/index.html'
-            }
-        },
         manifest: true
     },
     server: {
@@ -23,5 +18,4 @@ export default defineConfig({
             usePolling: true
         }
     },
-    //publicPath: '/'
 });

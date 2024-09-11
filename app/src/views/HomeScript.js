@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     loadQuestions() {
-      fetch('/assets/quizData.json')
+      fetch('/quizData.json')
         .then(response => response.json())
         .then(data => {
           this.questions = data;

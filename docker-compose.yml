@@ -11,15 +11,14 @@ services:
         - action: sync
           path: ./app
           target: /app
-#    command: "npm run dev -- --port 3000"
-    command: "npm run serve -- --port 3000"
+    command: "npm run dev -- --port 3000"
 
   web-builder:
     build:
       dockerfile: dockerfiles/web-base.Dockerfile
     volumes:
       - ./app/dist:/app/dist
-    command: "npx vue-cli-service build --target app --modern"
+    command: "npm run build"
 
   web-server:
     build:
