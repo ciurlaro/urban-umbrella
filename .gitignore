@@ -11,6 +11,7 @@ misc.xml
 /dockerfiles/build.log
 /build.log
 /app/dist/
-/app/android-build/
+/app/dist-apk/
 /logs/
 /app/dist/
+/app/src/assets

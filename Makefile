@@ -5,7 +5,7 @@
 #   make web-serve      - Start the web server
 #   make web-run        - Start the web server and run a shell inside it
 #   make web-exec       - Execute a shell inside an already running web server container
-#   make apk-build      - Run the 'apk' build process
+#   make dist-apk       - Run the 'apk' build process
 #   make apk-run        - Start the Android builder and run a shell inside it
 #   make clean          - Stop and clean up local Docker resources
 #   make prune          - Stop and clean up global Docker resources (BE AWARE! All Docker resources will be affected!)
@@ -28,17 +28,26 @@ define run-with-logs
 	$(if $(filter --logs,$(MAKECMDGOALS)),> logs/$(shell date +%s).log && $(1) 2>&1 | tee -a logs/.log,$(1))
 endef
 
+web-autosync: generate-env
+	$(call run-with-logs,docker compose up --watch web-autosync)
+
 web-build: generate-env
-	$(call run-with-logs,docker compose up --build web-builder)
+	$(call run-with-logs,docker compose up web-builder)
 
 web-serve: generate-env
-	$(call run-with-logs,docker compose up --build web-server)
+	$(call run-with-logs,docker compose up web-server)
+
+web-autosync-run: generate-env
+	$(call run-with-logs,docker compose run -p 3000:3000 web-autosync sh)
 
 web-build-run: generate-env
-	$(call run-with-logs,docker compose run -p 8080:8080 web-builder sh)
+	$(call run-with-logs,docker compose run web-builder sh)
 
 web-serve-run: generate-env
 	$(call run-with-logs,docker compose run -p 8080:8080 web-server sh)
+
+web-autosync-exec: generate-env
+	$(call run-with-logs,docker compose exec web-autosync sh)
 
 web-serve-exec: generate-env
 	$(call run-with-logs,docker compose exec web-server sh)

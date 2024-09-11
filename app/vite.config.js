@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [vue()],
-    // base: './',
     root: '.',
     build: {
         outDir: 'dist',
@@ -15,5 +14,14 @@ export default defineConfig({
         },
         manifest: true
     },
-    publicPath: '/'
+    server: {
+        logLevel: 'info',
+        host: '0.0.0.0',
+        port: 3000,
+        strictPort: true,
+        watch: {
+            usePolling: true
+        }
+    },
+    //publicPath: '/'
 });
