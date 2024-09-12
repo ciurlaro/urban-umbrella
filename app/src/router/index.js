@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import Home from '../views/Home.vue';
+import Quiz from '../views/QuizView/Quiz.vue';
 
 const routes = [
-    {path: '/', component: Home},
+    {path: '/', component: Quiz},
 ];
 
 const router = createRouter({

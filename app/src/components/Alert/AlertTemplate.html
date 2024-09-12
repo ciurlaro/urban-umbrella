@@ -1,0 +1,9 @@
+<div v-if="showAlert" class="position-absolute w-50" style="top: 5%;">
+    <div :class="['alert', 'alert-dismissible', `alert-${alertType}`]">
+        <button type="button" class="btn-close" @click="closeAlert"></button>
+        <strong v-if="alertType === 'success'">Well done!</strong>
+        <strong v-if="alertType === 'danger'">Oh snap!</strong>
+        {{ alertMessage }}
+    </div>
+</div>
+

@@ -1,7 +1,0 @@
-<template>
-  <div class="progress">
-    <div class="progress-bar progress-bar-striped bg-gradient" role="progressbar"
-         :style="{ width: progressPercentage + '%' }"
-         :aria-valuenow="progressPercentage" aria-valuemin="0" aria-valuemax="100"></div>
-  </div>
-</template>

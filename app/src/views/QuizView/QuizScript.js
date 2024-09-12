@@ -1,5 +1,5 @@
 export default {
-  name: 'Home',
+  name: 'Quiz',
   data() {
     return {
       questions: [],
@@ -8,35 +8,39 @@ export default {
       correctAnswer: null,
       questionIndex: 0,
       selectedAnswers: [],
-      showAlert: false,   // Control alert visibility
-      alertType: '',      // 'success' or 'danger' for different alert types
-      alertMessage: '',   // Message to be displayed in the alert
-      answersDisabled: false,  // Control whether answers are disabled after selection
+      showAlert: false,
+      alertType: '',
+      alertMessage: '',
+      answersDisabled: false,
     };
   },
   computed: {
+    // Compute the formatted title for the current question
     formattedQuestionTitle() {
       if (!this.currentQuestion) return 'No Question Available';
       return this.currentQuestion.charAt(0).toUpperCase() + this.currentQuestion.slice(1).toLowerCase();
     },
+    // Compute the percentage of quiz progress
     progressPercentage() {
       if (this.questions.length === 0) return 0;
       return ((this.questionIndex + 1) / this.questions.length) * 100;
     },
   },
   methods: {
+    // Load questions from the provided JSON file
     loadQuestions() {
       fetch('/quizData.json')
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           this.questions = data;
           this.loadQuestionByIndex(0); // Load the first question by default
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error loading quiz data:', error);
         });
     },
 
+    // Load a question by its index in the array
     loadQuestionByIndex(index) {
       if (index >= 0 && index < this.questions.length) {
         this.questionIndex = index;
@@ -52,27 +56,23 @@ export default {
       }
     },
 
-    // Select an answer, show an alert, and then move to the next question
+    // Handle answer selection in the QuestionCard component
     selectAnswer(index) {
-      // Handle selection
-      this.selectedAnswers = [index];
+      this.selectedAnswers = [index]; // Track the selected answer index
+      this.answersDisabled = true; // Disable further selections
 
-      // Disable other answers
-      this.answersDisabled = true;
-
-      // Check if the selected answer is correct and show the appropriate alert
+      // Show success or danger alert based on the correctness of the answer
       if (this.correctAnswer === index) {
         this.alertType = 'success';
-        this.alertMessage = 'Well done! You selected the correct answer.';
+        this.alertMessage = 'You selected the correct answer.';
       } else {
         this.alertType = 'danger';
-        this.alertMessage = 'Oh snap! That was not the correct answer.';
+        this.alertMessage = 'That was not the correct answer.';
       }
 
-      // Show the alert
       this.showAlert = true;
 
-      // Move to the next question after a brief delay
+      // Automatically move to the next question after a delay
       setTimeout(() => {
         const nextIndex = this.questionIndex + 1;
         if (nextIndex < this.questions.length) {
@@ -80,10 +80,15 @@ export default {
         } else {
           console.log('Quiz completed or no more questions');
         }
-      }, 1500); // Adjust delay if needed
+      }, 1500); // Adjust delay as needed
+    },
+
+    // Handle the closing of the alert from the Alert component
+    closeAlert() {
+      this.showAlert = false;
     },
   },
   mounted() {
-    this.loadQuestions();
+    this.loadQuestions(); // Fetch and load questions when the component is mounted
   },
 };

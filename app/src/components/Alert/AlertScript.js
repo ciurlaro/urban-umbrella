@@ -1,7 +1,16 @@
 export default {
-  props: {
-    showAlert: Boolean,
-    alertType: String,
-    alertMessage: String
-  }
-}
+    name: 'Alert',
+    props: {
+        alertType: String,
+        alertMessage: String,
+        showAlert: {
+            type: Boolean,
+            required: true,
+        },
+    },
+    methods: {
+        closeAlert() {
+            this.$emit('closeAlert');
+        },
+    },
+};

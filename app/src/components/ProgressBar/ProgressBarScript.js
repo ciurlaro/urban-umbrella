@@ -1,5 +1,6 @@
 export default {
-  props: {
-    progressPercentage: Number
-  }
-}
+    name: 'ProgressBar',
+    props: {
+        progressPercentage: Number,
+    },
+};
