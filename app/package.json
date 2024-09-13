@@ -17,7 +17,10 @@
     "@capacitor/device": "5.0.0",
     "bootstrap": "5.3.3",
     "bootstrap-vue-next": "0.24.12",
-    "bootswatch": "5.3.3"
+    "bootswatch": "5.3.3",
+    "tone": "15.0.4",
+    "framework7": "8.3.3",
+    "framework7-vue": "8.3.3"
   },
   "devDependencies": {
     "vite": "5.4.3",

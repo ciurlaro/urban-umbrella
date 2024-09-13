@@ -1,0 +1,45 @@
+<div v-if="showModal" class="modal" tabindex="-1" style="display: block;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal header with dynamic SVG based on isCorrect -->
+            <div :class="['modal-header', headerClass]">
+                <!-- Success Icon -->
+                <template v-if="isCorrect === true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                         class="bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 10.03a.75.75 0 0 0 1.07 0l3.992-4a.75.75 0 1 0-1.08-1.04L7.5 8.207 5.54 6.23a.75.75 0 1 0-1.08 1.04l2.51 2.76z"/>
+                    </svg>
+                </template>
+
+                <!-- Error Icon -->
+                <template v-else-if="isCorrect === false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 16 16">
+                        <path d="M8 1 A7 7 0 1 1 8 15 A7 7 0 1 1 8 1 M3 3 L13 13 M13 3 L3 13"  fill="white" stroke="black" stroke-width="4"/>
+                    </svg>
+                </template>
+
+                <!-- Default Empty Circle Icon -->
+                <template v-else>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                         class="bi bi-circle" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 1 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </template>
+
+                <!-- Close Button -->
+                <button type="button" class="btn-close" @click="cancel"></button>
+            </div>
+
+            <!-- Modal body with selected answer text -->
+            <div class="modal-body">
+                <p>{{ selectedAnswerText }}</p>
+            </div>
+
+            <!-- Modal footer with dynamic classes based on isCorrect -->
+            <div :class="['modal-footer', footerClass]">
+                <button type="button" class="btn btn-secondary" @click="cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @click="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

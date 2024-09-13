@@ -1,22 +1,21 @@
 <div class="d-flex vh-100 justify-content-center align-items-center">
-    <!-- QuestionCard Component -->
-    <QuestionCard
-            :formattedQuestionTitle="formattedQuestionTitle"
-            :currentAnswers="currentAnswers"
-            :selectedAnswers="selectedAnswers"
-            :answersDisabled="answersDisabled"
-            @selectAnswer="selectAnswer"
-    />
+  <QuestionCard
+    :formattedQuestionTitle="formattedQuestionTitle"
+    :currentAnswers="currentAnswers"
+    :selectedAnswers="selectedAnswers"
+    :answersDisabled="answersDisabled"
+    @selectAnswer="openModal"
+  />
 
-    <!-- ProgressBar Component -->
-    <ProgressBar :progressPercentage="progressPercentage"/>
+  <ProgressBar :progressPercentage="progressPercentage"/>
 
-    <!-- Alert Component -->
-    <Alert
-            v-if="showAlert"
-            :alertType="alertType"
-            :alertMessage="alertMessage"
-            :show-alert=true
-            @closeAlert="closeAlert"
-     />
+  <Modal
+    ref="modal"
+    v-if="showModal"
+    :selectedAnswerText="selectedAnswerText"
+    :showModal="true"
+    :isCorrect="isCorrect"
+    @submit="submitAnswer"
+    @cancel="closeModal"
+  />
 </div>
