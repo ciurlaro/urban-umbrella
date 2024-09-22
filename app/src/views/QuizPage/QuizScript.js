@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     formattedQuestionTitle() {
-      if (!this.currentQuestion) return 'No Question Available';
+      if (!this.currentQuestion) return 'No QuestionCard Available';
       return this.currentQuestion.charAt(0).toUpperCase() + this.currentQuestion.slice(1).toLowerCase();
     },
     progressPercentage() {

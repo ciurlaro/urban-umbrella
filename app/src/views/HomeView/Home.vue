@@ -9,16 +9,21 @@
 </template>
 
 <script>
-import { f7, f7ready } from 'framework7-vue';
+import {f7, f7ready} from 'framework7-vue';
 
 export default {
   name: 'HomePage',
   methods: {
-    handleClick() {
+    goToQuiz() {
       f7ready(() => {
-        f7.dialog.alert('Button clicked!');
+          this.$router.push({path: '/quiz'});
       });
     },
+    handleClick() {
+      f7ready(() => {
+        f7.dialog.confirm('Do you want to start the quiz?', this.goToQuiz);
+      });
+    }
   },
 };
 </script>
