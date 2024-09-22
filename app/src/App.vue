@@ -13,3 +13,18 @@ export default defineComponent({
   name: 'App',
 });
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400&display=swap');
+
+* {
+  font-family: 'Titillium Web', sans-serif;
+}
+</style>
+
+
+
+
+
+
+

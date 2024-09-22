@@ -25,7 +25,7 @@ export default {
       const element = this.$refs.questionText;
       const parent = element.parentNode;
       let fontSize = parseFloat(window.getComputedStyle(element).fontSize);
-      const minFontSize = 12; // Minimum font size in pixels
+      const minFontSize = 6; // Minimum font size in pixels
       const maxFontSize = 20; // Reduced maximum font size
 
       // Start from max font size
@@ -37,7 +37,7 @@ export default {
 
       // Reduce font size until text fits within parent height or reaches minimum font size
       while (elementHeight > parentHeight && fontSize > minFontSize) {
-        fontSize -= 0.5; // Decrease font size gradually
+        fontSize -= 0.8; // Decrease font size gradually
         element.style.fontSize = fontSize + 'px';
         elementHeight = element.scrollHeight;
       }
@@ -55,7 +55,7 @@ export default {
 .question-card {
   width: 100%;
   height: 15vh; /* Fixed height */
-  background-color: #fff;
+  background-color: #f4f7f6; /* Light-colored background */
   padding: 70px 10px;
   box-sizing: border-box;
   border-radius: 8px;
@@ -69,8 +69,8 @@ export default {
   text-align: center;
   line-height: 1.2;
   word-wrap: break-word;
-  font-size: 1.0rem; /* Reduced font size */
-  font-weight: 425;   /* Reduced font weight */
-  color: #000000;
+  font-size: 1.0rem; /* Base font size */
+  font-weight: 425; /* Reduced font weight */
+  color: #2c3e50; /* Dark text for contrast */
 }
 </style>

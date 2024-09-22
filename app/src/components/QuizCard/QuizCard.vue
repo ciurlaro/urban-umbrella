@@ -2,27 +2,29 @@
   <div class="card-container">
     <!-- Conditionally render checkmark or cross only after selection -->
     <i
-      v-if="isSelected"
-      class="icon f7-icons"
-      style="position: absolute; left: 15px; top: 15px; z-index: 1000;"
+        v-show="isSelected"
+        class="icon f7-icons"
     >
       {{ isCorrect ? 'checkmark_circle_fill' : 'xmark_circle_fill' }}
     </i>
 
     <!-- Card -->
     <div
-      class="card"
-      :class="{
+        class="card"
+        :class="{
         'disabled': isDeactivated,
+        'scale-up': scaleEffectActive, /* Add class for scaling */
       }"
-      @click="handleClick"
-      :style="cardStyles"
+        @click="handleClick($event)"
+        :style="cardStyles"
     >
       <div class="card-content">
         <div class="card-text" ref="cardText">
           {{ formattedAnswer }}
         </div>
       </div>
+      <!-- Ripple effect element -->
+      <span class="ripple"></span>
     </div>
   </div>
 </template>
@@ -30,6 +32,11 @@
 <script>
 export default {
   name: 'QuizCard',
+  data() {
+    return {
+      scaleEffectActive: false, // To toggle the scaling effect
+    };
+  },
   props: {
     answer: {
       type: String,
@@ -58,33 +65,27 @@ export default {
   },
   computed: {
     cardStyles() {
-      let backgroundColor = '#000'; // Default black background (fully opaque)
-      let border = '3px solid white'; // Default white border
-      let boxShadow = 'none'; // No shadow by default
+      let backgroundColor = 'linear-gradient(135deg, #2c3e50, #4ca1af)'; // Gradient background
+      let border = '3px solid transparent'; // Transparent border
+      let boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'; // Subtle shadow
       let transform = 'none'; // No transformation by default
 
       if (this.isSelected) {
         backgroundColor = this.isCorrect
-          ? 'rgba(56, 142, 60, 0.8)' // Dark green with transparency
-          : 'rgba(211, 47, 47, 0.8)'; // Dark red with transparency
+            ? 'linear-gradient(135deg, #28a745, #1e7d32)' // Green gradient if correct
+            : 'linear-gradient(135deg, #f85032, #e73827)'; // Red gradient if incorrect
         border = '3px solid black'; // Black border when selected
         boxShadow = this.isCorrect
-          ? '0 0 15px 5px rgba(56, 142, 60, 0.7)' // Green glow if correct
-          : '0 0 15px 5px rgba(211, 47, 47, 0.7)'; // Red glow if incorrect
+            ? '0 0 15px 5px rgba(67, 206, 162, 0.7)' // Green glow if correct
+            : '0 0 15px 5px rgba(248, 80, 50, 0.7)'; // Red glow if incorrect
       }
 
-      // Add hover effect only if the card is not selected
-      // if (!this.isSelected && !this.isDeactivated) {
-      //   transform = 'scale(1.05)';
-      //   boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
-      // }
-
       return {
-        backgroundColor: backgroundColor,
+        backgroundImage: backgroundColor,
         border: border,
         boxShadow: boxShadow,
         transform: transform,
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Smooth transitions
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease', // Smooth transitions
       };
     },
     formattedAnswer() {
@@ -100,11 +101,13 @@ export default {
     window.removeEventListener('resize', this.fitText);
   },
   methods: {
-    handleClick() {
+    handleClick(event) {
       try {
         if (!this.isDeactivated && !this.isSelected) {
           this.onAccept(this.answerNumber);
+          this.triggerRippleEffect(event);
           this.triggerBlinkAnimation();
+          this.triggerScaleEffect(); // Trigger the scale effect on click
         }
       } catch (error) {
         console.error("Error in handleClick:", error);
@@ -131,12 +134,35 @@ export default {
         elementHeight = element.scrollHeight;
       }
     },
+    triggerRippleEffect(event) {
+      const ripple = this.$el.querySelector('.ripple');
+      const card = this.$el.querySelector('.card');
+      const rect = card.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = event.clientX - rect.left - size / 2;
+      const y = event.clientY - rect.top - size / 2;
+
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      ripple.classList.add('ripple-active');
+      ripple.addEventListener('animationend', () => {
+        ripple.classList.remove('ripple-active');
+      }, {once: true});
+    },
     triggerBlinkAnimation() {
       const card = this.$el.querySelector('.card');
       card.classList.add('blink-border');
       setTimeout(() => {
         card.classList.remove('blink-border');
       }, 300); // Duration of the blink animation
+    },
+    triggerScaleEffect() {
+      // Apply the scaling class for the effect
+      this.scaleEffectActive = true;
+      setTimeout(() => {
+        this.scaleEffectActive = false; // Reset after animation duration
+      }, 300); // Duration of the scale effect
     },
   },
   watch: {
@@ -151,8 +177,7 @@ export default {
 .card-container {
   width: 100%;
   position: relative;
-  overflow: hidden; /* Ensure no scrolling */
-
+  overflow: hidden;
 }
 
 /* Adjusted card styles */
@@ -170,14 +195,15 @@ export default {
   overflow: hidden; /* Ensure no scrolling */
   box-sizing: border-box;
   position: relative;
-  background-color: #000; /* Solid black background */
-  box-shadow: none; /* No shadow by default */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth transitions */
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease; /* Add smooth transitions */
 }
 
 .card:hover {
-  transform: scale(1.05); /* Slightly enlarge the card on hover */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Add a shadow on hover */
+  transform: scale(1.03); /* Slightly enlarge the card on hover */
+  box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.2), /* Outer shadow */
+  inset 0 0 3px rgba(255, 255, 255, 0.5) !important; /* Adds inner glow */
 }
 
 .card.disabled {
@@ -188,6 +214,23 @@ export default {
 .card.correct-answer,
 .card.incorrect-answer {
   border: 3px solid black; /* Black border when selected */
+}
+
+.card.scale-up {
+  animation: scaleUp 0.3s ease-in-out; /* Temporary scale effect on click */
+}
+
+/* Animation for scaling */
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.105); /* Temporarily enlarge the card */
+  }
+  100% {
+    transform: scale(1); /* Return to original size */
+  }
 }
 
 .card-content {
@@ -207,7 +250,7 @@ export default {
   padding-left: 10px; /* Padding to avoid text touching the edge */
   padding-right: 10px; /* Padding to avoid text touching the edge */
   display: -webkit-box;
-  -webkit-line-clamp: 5; /* Limit to 3 lines */
+  -webkit-line-clamp: 5; /* Limit to 5 lines */
   -webkit-box-orient: vertical;
 }
 
@@ -218,6 +261,37 @@ export default {
   top: 15px;
   z-index: 1000;
   font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; /* Smooth fade-in */
+}
+
+.icon[style*="display: none"] {
+  opacity: 0;
+}
+
+/* When isSelected is true, the icon is shown and opacity transitions to 1 */
+[style*="display: block"] .icon {
+  opacity: 1;
+}
+
+/* Ripple effect styles */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.ripple-active {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 /* Blinking Border Animation */
@@ -233,14 +307,8 @@ export default {
   }
 }
 
-.blink-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  box-sizing: border-box;
-  animation: blink 0.3s ease-in-out;
+.blink-border {
+  animation: blink 0.6s ease-in-out;
 }
 
 /* Prevent Text Cropping */
