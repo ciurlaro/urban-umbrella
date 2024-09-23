@@ -1,14 +1,17 @@
 # Makefile for managing the Vue-Capacitor Docker setup
 #
 # Usage:
-#   make dist      - Run the web build process
-#   make web-serve      - Start the web server
-#   make web-run        - Start the web server and run a shell inside it
-#   make web-exec       - Execute a shell inside an already running web server container
-#   make dist-apk       - Run the 'apk' build process
-#   make apk-run        - Start the Android builder and run a shell inside it
-#   make clean          - Stop and clean up local Docker resources
-#   make prune          - Stop and clean up global Docker resources (BE AWARE! All Docker resources will be affected!)
+#   make dist                  - Run the web build process
+#   make web-serve             - Start the web server
+#   make web-run               - Start the web server and run a shell inside it
+#   make web-exec              - Execute a shell inside an already running web server container
+#   make dist-apk              - Run the 'apk' build process
+#   make apk-run               - Start the Android builder and run a shell inside it
+#   make web-autosync          - Run the web autosync process
+#   make web-autosync-run      - Start the web autosync process and run a shell inside it
+#   make web-autosync-exec     - Execute a shell inside an already running web autosync container
+#   make clean                 - Stop and clean up local Docker resources
+#   make prune                 - Stop and clean up global Docker resources (BE AWARE! All Docker resources will be affected!)
 #
 # Logging:
 #   To log command output to a file and display on console, add --logs to any command:

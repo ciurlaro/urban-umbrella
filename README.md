@@ -70,14 +70,14 @@ All project operations can be managed via `Makefile`.
 
 In the simplest cases, follow these steps:
 
-1. **Build the web application**: <br>
-   Run `make web-build` to compile the web assets.
+1. **Host the web application locally **: <br>
+   Run `make web-autosync` to serve the application locally (output will be served at `http://localhost:3000`).
    
-2. **Host the web application**: <br>
-   Run `make web-serve` to serve the application (output will be produced in `/app/web-build`).
+2. **Build the web application**: <br>
+   Run `make web-build` to compile the web assets (output will be produced in `/app/dist`).
    
 3. **Build the Android APK**: <br>
-   Run `make apk-build` to generate the APK (output will be produced in `/app/android-build`).
+   Run `make apk-build` to generate the APK (output will be produced in `/app/dist-apk`).
 
 For more options, consult the [`Makefile`](./Makefile).
 
